@@ -1,16 +1,14 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { use, useState } from 'react'
 import './App.css'
 
 function App() {
   let [title, setTitle] = useState(['남자', '강남', '파이썬']);
-  let [like, setLike] = useState(0);
-  
-  function likeFunc(){
-    setLike(like+1);
+  let [like, setLike] = useState([0, 0, 0]);
+  let [modal, setModal] = useState(false);
+
+  function likeFunc(i) {
   }
-  function titleFunc(){
+  function titleFunc() {
     let copy = [...title];
     copy[0] = "라"
     setTitle(copy);
@@ -20,7 +18,7 @@ function App() {
     console.log(copy);
   }
 
-  function sortFunc(){
+  function sortFunc() {
     let copy = [...title];
     copy.sort();
     setTitle(copy);
@@ -35,21 +33,37 @@ function App() {
         </div>
         <button onClick={titleFunc}>글 변경</button>
         <button onClick={sortFunc}>글 정렬</button>
-        <div className="list">
-          <h4>{title[0]}<span onClick={likeFunc}>👍</span>{like}</h4>          
-          <p>글 내용</p>
-        </div>
-        <div className="list">
-          <h4>{title[1]}</h4>
-          <p>글 내용</p>
-        </div>
-        <div className="list">
-          <h4>{title[2]}</h4>
-          <p>글 내용</p>
-        </div>
+        {
+          title.map((a, i) => {
+            return (
+              <div className="list">
+                <h4>{title[i]}<span onClick={() => {
+                  let copy = [...like]
+                  copy[i]++
+                  console.log(copy)
+                  console.log(like)
+                  setLike(copy); 
+                }}>👍</span>{like[i]}</h4>
+                <p onClick={() => setModal(!modal)}>글 내용</p>
+              </div>
+            )
+          })
+        }
+        {
+          modal == true ? <Modal /> : null
+        }
       </div>
     </>
   )
 }
 
+function Modal() {
+  return (
+    <div className="modal">
+      <h4>제목</h4>
+      <p>날짜</p>
+      <p>상세내용</p>
+    </div>
+  )
+}
 export default App
