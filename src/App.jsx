@@ -6,8 +6,6 @@ function App() {
   let [like, setLike] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
 
-  function likeFunc(i) {
-  }
   function titleFunc() {
     let copy = [...title];
     copy[0] = "라"
@@ -37,33 +35,37 @@ function App() {
           title.map((a, i) => {
             return (
               <div className="list">
-                <h4>{title[i]}<span onClick={() => {
+                <h4  onClick={() => setModal(!modal)} >{title[i]}<span onClick={() => {
                   let copy = [...like]
                   copy[i]++
                   console.log(copy)
                   console.log(like)
                   setLike(copy); 
                 }}>👍</span>{like[i]}</h4>
-                <p onClick={() => setModal(!modal)}>글 내용</p>
+                <p>글 내용</p>
               </div>
             )
           })
         }
         {
-          modal == true ? <Modal /> : null
+          modal == true ? <Modal title={title} color={'skyblue'}/> : null
         }
       </div>
     </>
   )
 }
 
-function Modal() {
+function Modal(props) {
   return (
-    <div className="modal">
-      <h4>제목</h4>
+    <div className="modal" style={{background : props.color}}>
+      <h4>{props.title}</h4>
       <p>날짜</p>
       <p>상세내용</p>
+      <button>글 수정</button>
+      {/* 글 수정 누르면 첫 제목이 변경되도록 해야된다 */}
     </div>
   )
 }
+
+
 export default App
