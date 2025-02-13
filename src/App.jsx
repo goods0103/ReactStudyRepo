@@ -5,6 +5,8 @@ function App() {
   let [title, setTitle] = useState(['남자', '강남', '파이썬']);
   let [like, setLike] = useState([0, 0, 0]);
   let [modal, setModal] = useState(false);
+  let [click, setClick] = useState(0);
+  let [input, setInput] = useState("");
 
   function titleFunc() {
     let copy = [...title];
@@ -35,20 +37,35 @@ function App() {
           title.map((a, i) => {
             return (
               <div className="list">
-                <h4  onClick={() => setModal(!modal)} >{title[i]}<span onClick={() => {
+                <h4 onClick={() => { setModal(!modal); setClick(i); }}  >{title[i]}<span onClick={() => {
                   let copy = [...like]
                   copy[i]++
                   console.log(copy)
                   console.log(like)
-                  setLike(copy); 
+                  setLike(copy);
                 }}>👍</span>{like[i]}</h4>
                 <p>글 내용</p>
+                <button onClick={()=>{
+                  let copy = [...title];
+                  copy.splice(i,1);
+                  setTitle(copy);
+                }}>글 삭제</button>
               </div>
             )
           })
         }
+        <input type="text" onChange={(e) => {
+          setInput(e.target.value);
+        }}
+        ></input>
+        {/* title에 value값 추가 */}
+        <button onClick={()=>{
+          setTitle([input, ...title]);
+          setLike([0, ...like]);
+          console.log(title);
+        }}>글발행</button>
         {
-          modal == true ? <Modal title={title} color={'skyblue'}/> : null
+          modal == true ? <Modal click={click} title={title} color={'skyblue'} /> : null
         }
       </div>
     </>
@@ -57,8 +74,8 @@ function App() {
 
 function Modal(props) {
   return (
-    <div className="modal" style={{background : props.color}}>
-      <h4>{props.title}</h4>
+    <div className="modal" style={{ background: props.color }}>
+      <h4>{props.title[props.click]}</h4>
       <p>날짜</p>
       <p>상세내용</p>
       <button>글 수정</button>
